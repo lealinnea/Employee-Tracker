@@ -12,11 +12,6 @@ CREATE TABLE department (
     
     );
     
-    
-    INSERT INTO department (name)
-    VALUES ("Sales"), ("Finance"), ("Engineering"), ("Legal");
-    
-    
     -- Role table
     CREATE TABLE role (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
