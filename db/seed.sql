@@ -1,4 +1,6 @@
--- Roll Values
+ INSERT INTO department (name)
+    VALUES ("Sales"), ("Finance"), ("Engineering"), ("Legal");
+
 INSERT INTO role (title, salary, department_id)
 VALUES ("Sales Team Lead", 100000,1);
 INSERT INTO role (title, salary, department_id)
@@ -18,11 +20,10 @@ INSERT INTO role (title, salary, department_id)
 VALUES ("Lawyer", 150000,4);
 INSERT INTO role (title, salary, department_id)
 VALUES ("Legal Aide", 50000,4);
--- Department Values
- INSERT INTO department (name)
-    VALUES ("Sales"), ("Finance"), ("Engineering"), ("Legal");
+
+
+
     
--- Employee Values
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Sam", "Smith",1, NULL);
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
@@ -37,7 +38,7 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Kevin", "Hart",6, NULL);
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Dora", "Explorer",7, NULL);
--- Updating manager for specific employee
+
 UPDATE employee SET manager_id = 1 WHERE id = 5;
 UPDATE employee SET manager_id = 1 WHERE id = 4;
 UPDATE employee SET manager_id = 1 WHERE id = 3;

@@ -11,6 +11,7 @@ CREATE TABLE department (
     name VARCHAR(30) NOT NULL
     
     );
+
     
     -- Role table
     CREATE TABLE role (
