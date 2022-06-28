@@ -7,3 +7,6 @@
 ### https://github.com/bokub/gradient-string
 
 ## Link to Video
+https://drive.google.com/file/d/1lkzEmnGaFToFXIOHXvEimZLtgkqCs13H/view?usp=sharing
+
+### Created by Lea Guerrero
