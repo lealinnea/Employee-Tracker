@@ -26,13 +26,13 @@ console.log(
 \`-----------------------------------------------------'
 `)
 );
-// var connection = mysql.createConnection({
-//   host: "localhost",
-//   port: 3306,
-//   user: "root",
-//   password: "Cheetah11",
-//   database: "employees_db",
-// });
+var connection = mysql.createConnection({
+  host: "localhost",
+  port: 3306,
+  user: "root",
+  password: "password",
+  database: "employees_db",
+});
 
 // connection.connect(function (err) {
 //   if (err) throw err;
@@ -87,16 +87,171 @@ function mainQuestions() {
     });
 }
 
+// handling view all employees
 function viewAllEmployees() {
-//   connection.query(
-//     "SELECT employee.id, employee.last_name, employee.first_name, role.title, name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;",
+  connection.query(
+    "SELECT employee.id, employee.last_name, employee.first_name, role.title, name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;",
 
-//     function (err, res) {
-//       if (err) throw err;
-//       console.table(res);
-//       beginTracker();
-//     }
-//   );
-console.log ("view all employees")
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      mainQuestions();
+    }
+  );
+}
+
+// handling view all depts
+function viewAllDepartments() {
+  connection.query(
+    "SELECT * FROM  department",
+
+    function (err, res) {
+        if (err) throw err
+        console.table(res)
+        mainQuestions()
+    }
+)
+}
+
+// View all roll query
+function viewAllRolls() {
+  connection.query(
+    "SELECT * FROM  role",
+    function (err, res) {
+        if (err) throw err
+        console.table(res)
+        mainQuestions()
+    }
+)
+}
+
+// Add a employee
+function AddEmployees() {
+//  adding the specific questions for adding an employee to an array of obj so we can just call the var name when we use inquirer
+  var addEmployeeQuestions = [
+  {
+      type: "input",
+      message: "What is the first name of the employee?",
+      name: "first_name"
+  },
+  {
+      type: "input",
+      message: "What is the last name of the employee?",
+      name: "last_name"
+  },
+  {
+      type: "input",
+      message: "What is the employee's title 1. Sales Team Lead 2. Sales Person 3. Accountant 4.Lead Finance Manager 5. Software Enginner 6. Lead Engineer 7. Lawyer 8. Legal Aide )?",
+      name: "role_id"
+  },
+  {
+      type: "input",
+      message: "What is the manager id of the new employee (numerical value 1-9)?",
+      name: "manager_id"
+  }
+  ]
+
+  inquirer.prompt(addEmployeeQuestions).then(res=>{
+    connection.query(
+      "INSERT INTO employee SET ?",
+      {
+          first_name: res.first_name,
+          last_name: res.last_name,
+          role_id: res.role_id,
+          manager_id: res.manager_id,
+      },
+      function (err) {
+          if (err) throw err
+          mainQuestions()
+     
+      }
+  )
+  })
+}
+// add a new dept
+function addDepartment() {
+  inquirer
+  .prompt({
+    type: "input",
+    message: "What is the name of the new department?",
+    name: "dept"
+  }) 
+  .then(function (res) {
+    connection.query("INSERT INTO department SET ?",
+        {
+            name: res.dept,
+        },
+        function (err) {
+            if (err) throw err
+            mainQuestions()
+        })
+      })
+}
+// add roll
+function addRoll() {
+  var addRollQuestions = [
+    {
+      type: "input",
+      message: "What is the name of the new role?",
+      name: "title"
+  },
+  {
+    type: "input",
+    message: "Which id would you like to assign to the roll?",
+    name: "id"
+},
+{
+    type: "input",
+    message: "What is the salary for the new role?",
+    name: "salary"
+}
+  ]
+  inquirer.prompt(addRollQuestions)
+  .then(function (res) {
+      connection.query("INSERT INTO role SET ?",
+          {
+              id: res.id,
+              title: res.title,
+              salary: res.salary,
+          },
+          function (err) {
+              if (err) throw err
+              mainQuestions()
+          })
+  })
+}
+// function to updateRoll
+function updateRoll() {
+  inquirer
+  .prompt([
+    {
+    type: "input",
+    name: "role_id",
+    message: "Which role id number would you like to update (numerical value 1-8)?"
+  },
+  {
+    type: "input",
+    name: "employee_id",
+    message: "What is the employee id number of the employee you want to put in the new role (numerical value 1-9)?"
+  }
+]).then(function(res) {
+  connection.query("UPDATE employee SET role_id = ? WHERE id = ?",
+  [
+      res.role_id,
+      res.employee_id
+  ],
+  function (err, result) {
+      if (err) throw err
+      console.table(result)
+      console.log(result.affectedRows +  " row updated!")
+  })
+  
+})
+
 }
 mainQuestions();
+function allDone() {
+  console.log("Thank you for visiting the Employee Manager!")
+}
+
+
